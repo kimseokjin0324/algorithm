@@ -136,3 +136,6 @@ O(1)+O(n)+O(n)+O(1)+O(n)+O(1)=O(max(1,n,n,1,n,1))=O(n)
         }while(pl<=pr);         //실행 횟수 log n/복잡도 O(log n)
         return -1;              //검색 실패 실행 횟수 1 /복잡도 O(1)
     }
+
+이진 검색 알고리즘의 복잡도를 구하면 아래처럼 O(logn)을 얻을 수 있다.
+O(1)+O(1)+O(logn)+O(logn)+O(1)+O(logn)+...+O(1)=O(logn)
