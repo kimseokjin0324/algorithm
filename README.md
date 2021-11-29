@@ -236,3 +236,44 @@ factorial 메소드는 그 내부에서 factorial 메소드를 호출합니다. 
 
 ## 재귀 알고리즘 분석
 재귀 알고리즘을 분석하기 위한 하향식(top down) 분석과 상향식(bottom up)분석을 살펴보고 재귀 알고리즘을 비재귀적으로 구현하는 방법에 대해서 알아보자
+
+### 재귀 알고리즘의 분석
+       //재귀 함수
+       static void recur(int n){
+         if(n>0){
+              recur(n-1);
+               System.out.println(n);
+               recur(n-2);
+         }
+       }
+      public static void main(String[] args){
+          Scanner stdIn=new Scanner(System.in);
+
+           System.out.printf("정수를입력하세요:");
+          int x= stdIn.nextInt();
+
+         recur(x);
+       }
+recur 메서드는 메서드 안에서 재귀 호출을 2회 실행한다. 이처럼 재귀 호출식을 여러 회 실행하는 메서드를 순수하게(genuinely) 재귀적이라고 하며, 실제 동작은 매우 복잡하다.
+recur 메서드를 하향식과 상향식의 두 방법으로 분석
+#### 하향식 분석
+매개 변수를 n으로 4를 전달하면 recur메서드는 아래의 순서대로 진행
+1. recur(3)을 실행
+2. 4를 출력
+3. recur(2)를 실행
+이렇게 하나의 작업이 완료 되어야 한 칸 위의 상자로 돌아갈수 있다.
+이처럼 가장 위쪽에 위치한 상자의 메서드 호출 부터 시작해 계단식으로 자세히 조사하는 분석 기법을 하향식 분석(top-down analysis)라고 한다.
+
+#### 상향식 분석
+하향식 분석과는 대조적으로 아래쪽부터 쌓아올리면서 분석하는 방법인 상향식 분석(bottom-up analysis)이다.
+recur메서는 n이 양수일때만 실행하므로 먼저 recur(1)을 생각해본다.
+1. recur(0)을 실행
+2. 1을 출력
+3. recur(-1)을 실행
+recur(2)에 대해서 생각
+1. recur(1)을 실행
+2. 2를 출력
+3. recur(0)을 실행
+
+### 재귀 알고리즘의 비재귀적 표현
+recur메서드를 재귀 호출을 사용하지 않고 구현하는 방법에 대해서 알아보자
