@@ -234,3 +234,5 @@ factorial 메소드는 그 내부에서 factorial 메소드를 호출합니다. 
 두 정수 x,y의 최대공약수를 gcd(x,y)로 표기할때 x=az,y=bz를 만족하는 정수 a,b와 최대의 정수 z가 존재할때 z를 gcd(x,y)라고 할 수 있다.
 최대공약수는 y가 0이면 x이고 y가 0이 아니면 gcd(y,x%y)로 구할 수 있다. 이 알고리즘을 유클리드 호제법(Euclidean method of mutual division)이라고 한다.
 
+## 재귀 알고리즘 분석
+재귀 알고리즘을 분석하기 위한 하향식(top down) 분석과 상향식(bottom up)분석을 살펴보고 재귀 알고리즘을 비재귀적으로 구현하는 방법에 대해서 알아보자
