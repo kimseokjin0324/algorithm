@@ -335,3 +335,25 @@ while문에 의해 반복적으로 수행되어 스택에 4,3,2,1이 쌓이게 �
 쌓아 놓은 원반을 최소의 횟수로 옮기기 위한 알고리즘인 하노이의 탑에 대해 살펴보자
 ### 하노이의 탑
 하노이의 탑은 작은 원반이 위에, 큰원반이 아래에 위치할 수 있도록 원반을 3개의 기둥 사이에서 옮기는 문제이다.문제는 원반은 크기가 다르고 처음에는 모든 원반이 이 규칙에 맞게 첫번째 기둥에 쌓여있다. 
+
+  static void move(int no,int x,int y){
+        if(no>1)
+            move(no-1,x,6-x-y);
+        System.out.println("원반["+no+"]을 "+x+"기둥에서"+y+"기둥으로 옮김");
+
+        if(no>1)
+            move(no-1,6-x-y,y);
+    }
+
+    public static void main(String[] args){
+        Scanner stdIn=new Scanner(System.in);
+
+        System.out.println("하노이의 탑");
+        System.out.printf("원반 개수:");
+        int n= stdIn.nextInt();
+
+        move(n,1,3);
+    }
+1. 바닥 원반을 제외한 그룹(원반[1]~원반[no-1])을 시작 기둥에서 중간 기둥으로 옮긴다.
+2. 바닥 원반 no를 시작 기둥에서 목표 기둥으로 옮겼음을 출력
+3. 바닥 원반을 제외한 그룹(원반[1]~원반[no-1)을 중간 기둥에서 목표 기둥으로 옮긴다.
