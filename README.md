@@ -404,3 +404,86 @@ while문에 의해 반복적으로 수행되어 스택에 4,3,2,1이 쌓이게 �
 
 이렇게 가지를 뻗으며 퀸을 배치하는 조합을 모두 나열을 했다. 이러한 방법을 가지 뻗기(branching)라고 한다. 하노이의 탑이나 8퀸 문제처럼 문제를 세분화하고 세분된 작은 문제의 풀이를 결합해 전체 문제를 풀이하는 기법을 분할 정복법(divide and conquer)이라고 한다.
 물론 문제를 세분할 때는 작은 문제의 풀이에서 원래 문제의 풀이가 쉽게 도출될 수 있게 설계해야한다.
+
+#### 분기 한정법
+가지 뻗기로 퀸을 배치하는 조합을 나열할 수는 있지만 8퀸 문제의 답을 얻을 수는 없다. 다음의 규칙을 적용해서 다시 살펴보자
+> [규칙2] 각 행에 퀸을 1개만 배치한다.
+
+
+public class QueenB {  
+    static boolean[] flag=new boolean[8]; //각 행에 퀸을 배치했는지 체크    
+    static int[] pos=new int[8];        //각 열의 퀸의 위치  
+
+    // 각 열의 퀸의 위치를 출력
+    static void print(){
+        for(int i=0;i<8;i++)
+            System.out.printf("%2d ",pos[i]);
+        System.out.println();
+    }
+
+    // i열에 퀸을 놓는다
+    static void set(int i){
+        for (int j=0;j<8;j++){
+            if(flag[i]==false){         // j행에는 아직 퀸을 배치하지 않았다면
+                pos[i]=j;               //퀸을 j행에 배치
+                if(i==7)                //모든 열에 배치함
+                    print();
+                else{
+                    flag[i]=true;
+                    set(i+1);           //다음 열에 퀸을 배치
+                    flag[j]=false;
+                }
+            }
+        }
+    }
+    public static void main(String[] args){
+        set(0);                 //0열에 퀸을 배치한다
+    }
+}
+
+flag라는 배열을 사용한다. flag는 같은 행에 중복하여 퀸이 배치되는 것을 방지하기 위한 표시(flag)이다. j행에 퀸을 배치하면 flag[j]의 값을 true로 하고,배치되지 않은 상태를 flase로 한다.
+0열에 퀸을 배치하기 위해 호출한 set메서드는 먼저 0행에 퀸을 배치한다. 0해에 퀸을 배치했기 때문에 flag[0]의 값을 true로 변경. 그런 다음 set메서드를 재귀적으로 호출한다. 이렇게 호출한 set메서드는 다음 1열에 퀸을 배치한다. for문은 0행~7행까지 퀸을 배치한다. 
+이처럼 필요하지 않은 분기를 없애 불필요한 조합을 줄이는 방법을 한정(bounding)조작이라고 하고, 가지 뻗기와 한정 조작을 조합하여 문제를 풀어가는 방법을 분기 한정법(branching and bounding method)라고 한다.
+
+### 8퀸을 푸는 문제
+위의 코드는 퀸이 행방향과 열방향으로 겹쳐지지 않은 조합을 나열하기만했다. => 이것은 8룩문제와 같음
+퀸은 대각선으로도 이동할 수 있기때문에 어떤 대각선에서 보더라도 1개만 배치하는 한정 조작을 추가해야한다.
+
+public class QueenB {  
+    static boolean[] flag_a=new boolean[8]; //각 행에 퀸을 배치했는지 체크  
+    static boolean[] flag_b=new boolean[15]; // / 대각선 방향으로 퀸을 배치했는지 체크  
+    static boolean[] flag_c=new boolean[15]; // \ 대각선 방향으로 퀸을 배치했는지 체크  
+    static int[] pos=new int[8];        //각 열의 퀸의 위치  
+
+    // 각 열의 퀸의 위치를 출력
+    static void print(){
+        for(int i=0;i<8;i++)
+            System.out.printf("%2d ",pos[i]);
+        System.out.println();
+    }
+
+    // i열의 알맞은 위치에 퀸을 배치
+    static void set(int i){
+        for (int j=0;j<8;j++){
+            if(flag_a[i]==false&& // j행에는 아직 퀸을 배치하지 않았다면
+            flag_b[i+j]==false&&  // 대각선 /에 아직 배치하지 않았다면
+            flag_c[i-j+7]==false) // 대각선 \에 아직 배치하지 않았다면
+            {
+                pos[i]=j;               //퀸을 j행에 배치
+                if(i==7)                //모든 열에 배치함
+                    print();
+                else{
+                    flag_a[j]=flag_b[i+j]=flag_c[i-j+7]=true;
+                    set(i+1);
+                    flag_a[j]=flag_b[i+j]=flag_c[i-j+7]=false;
+                }
+            }
+        }
+    }
+    public static void main(String[] args){
+        set(0);                 //0열에 퀸을 배치한다
+    }
+}
+
+flag_b와 flag_c는 '/'방향과 '\'방향의 대각선 위에 퀸을 배치했는지 체크하는 배열이다.
+j행i열에서 각각의 대각선 방향에 대해 퀸이 배치되었을 때 체크하는 배열의 인덱스는 flag_b[i+j], flag_c[i-j+7]이다.
